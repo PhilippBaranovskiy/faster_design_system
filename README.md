@@ -307,6 +307,32 @@ license; it excludes the Vite pages, their hashed assets, and Storybook. GitHub 
 the full `dist/` directory to GitHub Pages after successful quality checks on pushes to `main`.
 Configure the repository’s Pages source as **GitHub Actions**.
 
+### npm library packaging
+
+Faster UI is an npm-publishable ESM React library named `@faster-ui/react`. Its package exports
+the component and token API from `@faster-ui/react`, TypeScript declarations, and the compiled
+stylesheet from `@faster-ui/react/styles.css`.
+
+Build and inspect the exact package contents locally before publishing:
+
+```bash
+npm run build:production
+npm pack --dry-run
+```
+
+To create the distributable tarball without uploading it to the npm registry, run:
+
+```bash
+npm pack
+```
+
+This produces a versioned `.tgz` archive containing only the files permitted by the
+`package.json` `files` allowlist. Consumers install the published package with:
+
+```bash
+npm install @faster-ui/react
+```
+
 ## Quality and release workflow
 
 On pull requests, pushes to `main`, and published GitHub Releases, CI installs with `npm ci` and
