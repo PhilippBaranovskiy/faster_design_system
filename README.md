@@ -163,7 +163,8 @@ The equivalent resolved values are exported as `shadowTokens` from the package t
 - Three sizes: `sm` (24px), `md` (36px), and `lg` (40px)
 - Four modes: `primary`, `outline`, `ghost`, and `link`
 - Three visual kinds: `button`, `danger`, and `iconButton`
-- Text-only, leading- or trailing-icon-with-label, and icon-only layouts
+- Text-only, leading- or trailing-icon-with-label, and icon-only layouts (both icon slots cannot
+  be used together)
 - Native button behavior plus disabled and loading states
 - `aria-busy` conveys loading state and loading disables repeat activation
 - Either icon slot becomes an `iconButton` automatically when no label is supplied

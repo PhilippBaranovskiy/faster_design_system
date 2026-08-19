@@ -62,8 +62,9 @@ const visualClasses: Record<ButtonKind, Record<ButtonMode, string>> = {
  *   or `iconButton`. Icon-only content uses `iconButton` automatically.
  * - `mode` selects the treatment: `primary`, `outline`, `ghost`, or `link`.
  * - `size` controls the component dimensions and label typography.
- * - `leadingIcon` and `trailingIcon` render decorative icon slots; provide
- *   `aria-label` or `aria-labelledby` when rendering an icon-only button.
+ * - One of `leadingIcon` or `trailingIcon` renders a decorative icon slot;
+ *   the slots cannot be used together. Provide `aria-label` or
+ *   `aria-labelledby` when rendering an icon-only button.
  * - `loading` shows a spinner and disables the native button to prevent
  *   repeated activation; `disabled`, `type`, and `onClick` retain their native
  *   button behavior.
@@ -77,21 +78,34 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     leadingIcon,
     loading = false,
     mode = 'primary',
-    onClick,
     size = 'md',
     trailingIcon,
     type = 'button',
-    'aria-describedby': ariaDescribedBy,
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
+    ...buttonProps
   },
   ref,
 ) {
+  const ariaLabel = buttonProps['aria-label'];
+  const ariaLabelledBy = buttonProps['aria-labelledby'];
   const isDisabled = disabled || loading;
-  const hasLabel = children !== null && children !== undefined;
+  const hasLabel =
+    typeof children === 'string'
+      ? children.trim().length > 0
+      : children !== null && children !== undefined && typeof children !== 'boolean';
   const hasLeadingIcon = leadingIcon !== null && leadingIcon !== undefined;
   const hasTrailingIcon = trailingIcon !== null && trailingIcon !== undefined;
   const isIconOnly = !hasLabel && (hasLeadingIcon || hasTrailingIcon);
+
+  if (hasLeadingIcon && hasTrailingIcon) {
+    throw new Error('Button: leadingIcon and trailingIcon cannot be used together.');
+  }
+
+  if (isIconOnly && !ariaLabel && !ariaLabelledBy) {
+    throw new Error(
+      'Button: icon-only buttons require either an aria-label or aria-labelledby prop.',
+    );
+  }
+
   const buttonKind = kind ?? (isIconOnly ? 'iconButton' : 'button');
   const buttonMode = buttonKind === 'iconButton' && mode === 'link' ? 'primary' : mode;
   const currentSize = sizeClasses[size];
@@ -104,13 +118,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   return (
     <button
+      {...buttonProps}
       ref={ref}
       type={type}
       disabled={isDisabled}
       aria-busy={loading || undefined}
-      aria-describedby={ariaDescribedBy}
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledBy}
       data-kind={buttonKind}
       data-mode={buttonMode}
       className={cn(
@@ -131,7 +143,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
             ),
         className,
       )}
-      onClick={onClick}
     >
       {hasLeadingIcon || loading ? (
         <span
