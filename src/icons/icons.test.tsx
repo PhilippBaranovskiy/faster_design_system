@@ -28,5 +28,20 @@ describe('icons', () => {
     const icon = screen.getByLabelText('Action icon');
 
     expect(icon).not.toHaveAttribute('aria-hidden');
+    expect(icon).toHaveAttribute('focusable', 'false');
+  });
+
+  it.each(icons)('%s can be labelled by another element', (_name, Icon) => {
+    render(
+      <>
+        <span id="icon-label">Action icon</span>
+        <Icon aria-labelledby="icon-label" />
+      </>,
+    );
+
+    const icon = screen.getByLabelText('Action icon');
+
+    expect(icon).toHaveAttribute('aria-labelledby', 'icon-label');
+    expect(icon).not.toHaveAttribute('aria-hidden');
   });
 });

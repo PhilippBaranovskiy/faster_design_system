@@ -22,6 +22,28 @@ describe('Button', () => {
     cy.get('[data-cy="test-icon"]').should('exist');
   });
 
+  it('renders every button treatment and size', () => {
+    cy.mount(
+      <>
+        <Button mode="outline">Outline</Button>
+        <Button kind="danger" mode="ghost">
+          Delete
+        </Button>
+        <Button size="sm">Small</Button>
+        <Button size="lg">Large</Button>
+      </>,
+    );
+
+    cy.contains('button', 'Outline')
+      .should('have.attr', 'data-mode', 'outline')
+      .and('have.class', 'faster-button--button-outline');
+    cy.contains('button', 'Delete')
+      .should('have.attr', 'data-kind', 'danger')
+      .and('have.class', 'faster-button--danger-ghost');
+    cy.contains('button', 'Small').should('have.class', 'h-[var(--faster-button-small-height)]');
+    cy.contains('button', 'Large').should('have.class', 'h-[var(--faster-button-large-height)]');
+  });
+
   it('invokes an enabled button click handler', () => {
     const onClick = cy.spy().as('onClick');
 

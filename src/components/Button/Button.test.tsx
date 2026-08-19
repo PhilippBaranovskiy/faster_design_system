@@ -51,10 +51,14 @@ describe('Button', () => {
     expect(button).toHaveClass(className);
   });
 
-  it.each(['sm', 'md', 'lg'] as const)('supports the %s size', (size) => {
+  it.each([
+    ['sm', 'h-[var(--faster-button-small-height)]'],
+    ['md', 'h-[var(--faster-button-medium-height)]'],
+    ['lg', 'h-[var(--faster-button-large-height)]'],
+  ] as const)('supports the %s size', (size, heightClass) => {
     render(<Button size={size}>Continue</Button>);
 
-    expect(screen.getByRole('button', { name: 'Continue' })).toHaveAttribute('data-kind', 'button');
+    expect(screen.getByRole('button', { name: 'Continue' })).toHaveClass(heightClass);
   });
 
   it('renders leading and trailing icons as decorative content', () => {
@@ -81,6 +85,20 @@ describe('Button', () => {
     expect(button).toHaveClass('faster-button--icon-button-primary');
   });
 
+  it('uses aria-labelledby as the accessible name for icon-only content', () => {
+    render(
+      <>
+        <span id="add-item-label">Add item</span>
+        <Button leadingIcon={<TestIcon />} aria-labelledby="add-item-label" />
+      </>,
+    );
+
+    const button = screen.getByRole('button', { name: 'Add item' });
+
+    expect(button).toHaveAttribute('aria-labelledby', 'add-item-label');
+    expect(button).toHaveAttribute('data-kind', 'iconButton');
+  });
+
   it.each(['primary', 'outline', 'ghost'] as const)(
     'supports the %s icon button treatment',
     (mode) => {
@@ -98,6 +116,19 @@ describe('Button', () => {
 
     await user.click(screen.getByRole('button', { name: 'Continue' }));
 
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('activates an enabled button with the keyboard', async () => {
+    const user = userEvent.setup();
+    const onClick = jest.fn();
+
+    render(<Button onClick={onClick}>Continue</Button>);
+
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Continue' })).toHaveFocus();
+
+    await user.keyboard('{Enter}');
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
@@ -162,6 +193,17 @@ describe('Button', () => {
     expect(await axe(container)).toHaveNoViolations();
 
     rerender(<Button leadingIcon={<TestIcon />} aria-label="Add item" />);
+
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('has no accessibility violations when an icon-only button is labelled by another element', async () => {
+    const { container } = render(
+      <>
+        <span id="add-item-label">Add item</span>
+        <Button leadingIcon={<TestIcon />} aria-labelledby="add-item-label" />
+      </>,
+    );
 
     expect(await axe(container)).toHaveNoViolations();
   });
