@@ -1,0 +1,87 @@
+{
+  "black": "#000000",
+  "white": "#FFFFFF",
+  "neutral": {
+    "700": "#1F1F1F",
+    "600": "#4B4B4B",
+    "500": "#8E8E8E",
+    "400": "#CACACA",
+    "300": "#E1E1E1",
+    "200": "#EEEEEE",
+    "100": "#F5F5F5",
+    "50": "#FAFAFA"
+  },
+  "primary": {
+    "700": "#00ABB6",
+    "600": "#15C5CE",
+    "500": "#47CFD6",
+    "400": "#7DDDE1",
+    "300": "#B0EBEC",
+    "200": "#DFF7F7",
+    "100": "#EEFCFC",
+    "50": "#F9FFFF"
+  },
+  "auxiliary": {
+    "700": "#FE632F",
+    "600": "#FF8156",
+    "500": "#FFA487",
+    "400": "#FFC8B6",
+    "300": "#FFE1D6",
+    "200": "#FFF2EE",
+    "100": "#FFF6F3",
+    "50": "#FFFCFC"
+  },
+  "danger": {
+    "700": "#EC2D30",
+    "600": "#F64C4C",
+    "500": "#EB6F70",
+    "400": "#F49898",
+    "300": "#FFCCD2",
+    "200": "#FFEBEE",
+    "100": "#FEF2F2",
+    "50": "#FFFBFB"
+  },
+  "warning": {
+    "700": "#FE9B0E",
+    "600": "#FFAD0D",
+    "500": "#FFC62B",
+    "400": "#FFDD82",
+    "300": "#FFEAB3",
+    "200": "#FFF7E1",
+    "100": "#FFF9EE",
+    "50": "#FFFDFA"
+  },
+  "success": {
+    "700": "#0C9D61",
+    "600": "#47B881",
+    "500": "#6BC497",
+    "400": "#97D4B4",
+    "300": "#C0E5D1",
+    "200": "#E5F5EC",
+    "100": "#F2FAF6",
+    "50": "#FBFEFC"
+  },
+  "info": {
+    "700": "#3A70E2",
+    "600": "#3B82F6",
+    "500": "#4BA1FF",
+    "400": "#93C8FF",
+    "300": "#BDDDFF",
+    "200": "#E4F2FF",
+    "100": "#F1F8FF",
+    "50": "#F8FCFF"
+  },
+  "text": {
+    "primary": "{color.neutral.700}",
+    "secondary": "{color.neutral.600}",
+    "inverse": "{color.white}"
+  },
+  "surface": "{color.white}",
+  "border": "{color.neutral.300}",
+  "borderStrong": "{color.neutral.400}",
+  "accent": "{color.primary.700}",
+  "accentHover": "{color.primary.600}",
+  "dangerDefault": "{color.danger.700}",
+  "dangerHover": "{color.danger.600}",
+  "focusRing": "{color.primary.700}"
+}

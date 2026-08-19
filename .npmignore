@@ -1,0 +1,6 @@
+.github
+src
+*.config.*
+tsconfig.json
+tsconfig.build.json
+index.html

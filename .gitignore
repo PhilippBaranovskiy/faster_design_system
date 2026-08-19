@@ -1,2 +1,6 @@
 .DS_Store
 docs/codemie
+node_modules
+dist
+.env
+.env.local

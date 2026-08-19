@@ -1,0 +1,237 @@
+{
+  "borderWidth": "1px",
+  "large": {
+    "height": "40px",
+    "minTextWidth": "90px",
+    "paddingInline": "8px",
+    "iconSize": "18px"
+  },
+  "medium": {
+    "height": "36px",
+    "minTextWidth": "82px",
+    "paddingInline": "8px",
+    "iconSize": "16px"
+  },
+  "small": {
+    "height": "24px",
+    "minTextWidth": "54px",
+    "paddingInline": "4px",
+    "iconSize": "14px"
+  },
+  "button": {
+    "primary": {
+      "default": {
+        "background": "{color.primary.600}",
+        "text": "{color.white}"
+      },
+      "hover": {
+        "background": "{color.primary.500}",
+        "text": "{color.white}"
+      },
+      "pressed": {
+        "background": "{color.primary.700}",
+        "text": "{color.white}"
+      },
+      "disabled": {
+        "background": "{color.primary.300}",
+        "text": "{color.white}"
+      }
+    },
+    "outline": {
+      "default": {
+        "background": "{color.white}",
+        "text": "{color.neutral.600}",
+        "borderColor": "{color.neutral.300}"
+      },
+      "hover": {
+        "background": "{color.white}",
+        "text": "{color.primary.500}",
+        "borderColor": "{color.primary.500}"
+      },
+      "pressed": {
+        "background": "{color.white}",
+        "text": "{color.primary.700}",
+        "borderColor": "{color.primary.700}"
+      },
+      "disabled": {
+        "background": "{color.white}",
+        "text": "{color.neutral.400}",
+        "borderColor": "{color.neutral.200}"
+      }
+    },
+    "ghost": {
+      "default": {
+        "background": "transparent",
+        "text": "{color.neutral.600}"
+      },
+      "hover": {
+        "background": "{color.neutral.100}",
+        "text": "{color.neutral.600}"
+      },
+      "pressed": {
+        "background": "{color.neutral.300}",
+        "text": "{color.neutral.600}"
+      },
+      "disabled": {
+        "background": "transparent",
+        "text": "{color.neutral.400}"
+      }
+    },
+    "link": {
+      "default": {
+        "background": "transparent",
+        "text": "{color.primary.600}"
+      },
+      "hover": {
+        "background": "transparent",
+        "text": "{color.primary.500}"
+      },
+      "pressed": {
+        "background": "transparent",
+        "text": "{color.primary.700}"
+      },
+      "disabled": {
+        "background": "transparent",
+        "text": "{color.primary.400}"
+      }
+    }
+  },
+  "danger": {
+    "primary": {
+      "default": {
+        "background": "{color.danger.600}",
+        "text": "{color.white}"
+      },
+      "hover": {
+        "background": "{color.danger.500}",
+        "text": "{color.white}"
+      },
+      "pressed": {
+        "background": "{color.danger.700}",
+        "text": "{color.white}"
+      },
+      "disabled": {
+        "background": "{color.danger.300}",
+        "text": "{color.white}"
+      }
+    },
+    "outline": {
+      "default": {
+        "background": "{color.white}",
+        "text": "{color.danger.600}",
+        "borderColor": "{color.danger.600}"
+      },
+      "hover": {
+        "background": "{color.white}",
+        "text": "{color.danger.500}",
+        "borderColor": "{color.danger.500}"
+      },
+      "pressed": {
+        "background": "{color.white}",
+        "text": "{color.danger.700}",
+        "borderColor": "{color.danger.700}"
+      },
+      "disabled": {
+        "background": "{color.white}",
+        "text": "{color.danger.400}",
+        "borderColor": "{color.danger.400}"
+      }
+    },
+    "ghost": {
+      "default": {
+        "background": "transparent",
+        "text": "{color.danger.600}"
+      },
+      "hover": {
+        "background": "{color.danger.100}",
+        "text": "{color.danger.600}"
+      },
+      "pressed": {
+        "background": "{color.danger.300}",
+        "text": "{color.danger.700}"
+      },
+      "disabled": {
+        "background": "transparent",
+        "text": "{color.danger.400}"
+      }
+    },
+    "link": {
+      "default": {
+        "background": "transparent",
+        "text": "{color.danger.600}"
+      },
+      "hover": {
+        "background": "transparent",
+        "text": "{color.danger.500}"
+      },
+      "pressed": {
+        "background": "transparent",
+        "text": "{color.danger.700}"
+      },
+      "disabled": {
+        "background": "transparent",
+        "text": "{color.danger.400}"
+      }
+    }
+  },
+  "iconButton": {
+    "primary": {
+      "default": {
+        "background": "{color.primary.600}",
+        "text": "{color.white}"
+      },
+      "hover": {
+        "background": "{color.primary.500}",
+        "text": "{color.white}"
+      },
+      "pressed": {
+        "background": "{color.primary.700}",
+        "text": "{color.white}"
+      },
+      "disabled": {
+        "background": "{color.primary.300}",
+        "text": "{color.white}"
+      }
+    },
+    "outline": {
+      "default": {
+        "background": "{color.white}",
+        "text": "{color.neutral.600}",
+        "borderColor": "{color.neutral.300}"
+      },
+      "hover": {
+        "background": "{color.neutral.100}",
+        "text": "{color.neutral.600}",
+        "borderColor": "{color.neutral.300}"
+      },
+      "pressed": {
+        "background": "{color.neutral.300}",
+        "text": "{color.neutral.600}",
+        "borderColor": "{color.neutral.300}"
+      },
+      "disabled": {
+        "background": "{color.white}",
+        "text": "{color.neutral.400}",
+        "borderColor": "{color.neutral.200}"
+      }
+    },
+    "ghost": {
+      "default": {
+        "background": "transparent",
+        "text": "{color.neutral.600}"
+      },
+      "hover": {
+        "background": "{color.neutral.100}",
+        "text": "{color.neutral.600}"
+      },
+      "pressed": {
+        "background": "{color.neutral.300}",
+        "text": "{color.neutral.600}"
+      },
+      "disabled": {
+        "background": "transparent",
+        "text": "{color.neutral.400}"
+      }
+    }
+  }
+}
