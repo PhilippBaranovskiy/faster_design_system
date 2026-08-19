@@ -1,15 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState, type ComponentType } from 'react';
+import { useEffect, useState, type ComponentType } from 'react';
 import { Button } from '../Button';
 import { Dialog } from './Dialog';
 import type { DialogPreset, DialogSize, DialogVariant } from './Dialog.types';
 
 type DialogStoryArgs = {
+  body: string;
   bodyMinHeight?: number;
+  closeLabel: string;
   closeOnBackdropClick: boolean;
   closeOnEscape: boolean;
   footer: boolean;
   icon: boolean;
+  open: boolean;
   preset?: DialogPreset;
   size: DialogSize;
   title: string;
@@ -29,10 +32,13 @@ const dialogVariants = [
 ] as const satisfies ReadonlyArray<{ value: DialogVariant; label: string }>;
 
 const storyArgs = {
+  body: 'Review your project settings and save your changes when you are ready.',
   closeOnBackdropClick: false,
   closeOnEscape: true,
+  closeLabel: 'Close dialog',
   footer: true,
   icon: false,
+  open: false,
   preset: undefined,
   size: 'md',
   title: 'Project settings',
@@ -40,38 +46,46 @@ const storyArgs = {
 } satisfies DialogStoryArgs;
 
 function DialogStory({
+  body,
   bodyMinHeight,
+  closeLabel,
   closeOnBackdropClick,
   closeOnEscape,
   footer,
   icon,
+  open,
   preset,
   size,
   title,
   variant,
 }: DialogStoryArgs) {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open);
   const isWarning = preset === 'warning';
+
+  useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
 
   return (
     <>
-      <Button kind={isWarning ? 'danger' : 'button'} mode="primary" onClick={() => setOpen(true)}>
+      <Button kind={isWarning ? 'danger' : 'button'} mode="primary" onClick={() => setIsOpen(true)}>
         Open dialog
       </Button>
       <Dialog
         bodyMinHeight={bodyMinHeight}
+        closeLabel={closeLabel}
         closeOnBackdropClick={closeOnBackdropClick}
         closeOnEscape={closeOnEscape}
         footer={
           footer ? (
             <>
-              <Button mode="ghost" onClick={() => setOpen(false)}>
+              <Button mode="ghost" onClick={() => setIsOpen(false)}>
                 Cancel
               </Button>
               <Button
                 kind={isWarning ? 'danger' : 'button'}
                 mode="primary"
-                onClick={() => setOpen(false)}
+                onClick={() => setIsOpen(false)}
               >
                 {isWarning ? 'Delete' : 'Save changes'}
               </Button>
@@ -79,8 +93,8 @@ function DialogStory({
           ) : undefined
         }
         icon={icon ? <span className="faster-type-title">!</span> : undefined}
-        onClose={() => setOpen(false)}
-        open={open}
+        onClose={() => setIsOpen(false)}
+        open={isOpen}
         preset={preset}
         size={size}
         title={title}
@@ -94,7 +108,7 @@ function DialogStory({
           <p className="m-0">
             {isWarning
               ? 'Deleting this project will permanently remove its data and cannot be undone.'
-              : 'Review your project settings and save your changes when you are ready.'}
+              : body}
           </p>
         )}
       </Dialog>
@@ -217,9 +231,17 @@ const meta = {
   tags: ['autodocs'],
   args: storyArgs,
   argTypes: {
+    body: {
+      control: 'text',
+      description: 'Text content rendered in the basic dialog body.',
+    },
     bodyMinHeight: {
       control: 'number',
       description: 'Optional minimum body height in pixels.',
+    },
+    closeLabel: {
+      control: 'text',
+      description: 'Accessible label for the close control.',
     },
     closeOnBackdropClick: {
       control: 'boolean',
@@ -234,6 +256,10 @@ const meta = {
     icon: {
       control: 'boolean',
       description: 'Shows the optional icon slot before the body content.',
+    },
+    open: {
+      control: 'boolean',
+      description: 'Controls whether the dialog is initially visible. The trigger can reopen it.',
     },
     preset: {
       control: 'radio',
@@ -256,7 +282,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A modal dialog in 400px, 600px, and 900px widths. The scrollable layout keeps its header and footer fixed, while the divider layout separates its sections with border lines.',
+          'A modal dialog in 400px, 600px, and 900px widths. Use the Playground to control its visible content, close behavior, layout, size, preset, footer, icon, and open state. The scrollable layout keeps its header and footer fixed, while the divider layout separates its sections with border lines.',
       },
     },
   },
@@ -311,6 +337,22 @@ export const MinimumBodyHeight: Story = {
     ...storyArgs,
     bodyMinHeight: 160,
     footer: false,
+  },
+};
+
+export const DismissibleInteractions: Story = {
+  name: 'Dismissible interactions',
+  args: {
+    ...storyArgs,
+    closeOnBackdropClick: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Open the dialog, then close it with the close button, Escape key, or backdrop. Toggle the Playground controls to compare disabled backdrop or Escape closing.',
+      },
+    },
   },
 };
 

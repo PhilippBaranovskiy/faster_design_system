@@ -250,6 +250,45 @@ export const IconButtonGhost: Story = {
   },
 };
 
+export const IconButtonLinkResolution: Story = {
+  name: 'IconButton / Link resolution',
+  args: {
+    ...storyArgs,
+    ariaLabel: 'Add item',
+    iconLayout: 'iconOnly',
+    kind: 'iconButton',
+    label: 'Add item',
+    mode: 'link',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'IconButtons do not have a link treatment. Passing `mode="link"` intentionally resolves to the primary IconButton treatment.',
+      },
+    },
+  },
+};
+
+export const AutomaticIconButton: Story = {
+  name: 'Automatic IconButton',
+  args: {
+    ...storyArgs,
+    ariaLabel: 'Add item',
+    iconLayout: 'iconOnly',
+    kind: 'button',
+    label: 'Add item',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When icon-only content is used without an explicit `kind`, Button automatically selects the IconButton treatment.',
+      },
+    },
+  },
+};
+
 export const LayoutsAndSizes: Story = {
   name: 'Layouts and sizes',
   args: storyArgs,
