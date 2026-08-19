@@ -1,8 +1,9 @@
 # Faster UI
 
 Faster UI is an accessible, ESM React component library published as
-`@faster-ui/react`. It currently provides a token-driven **Button** component, the `PlusIcon` and
-`ArrowRightIcon` SVG icons, and a public TypeScript API for the design tokens that underpin them.
+`@faster-ui/react`. It currently provides token-driven **Button** and **Input** components, the
+`PlusIcon`, `ArrowRightIcon`, and `MagnifierIcon` SVG icons, and a public TypeScript API for the
+design tokens that underpin them.
 
 The repository also ships three development and documentation surfaces:
 
@@ -41,14 +42,17 @@ npm install @faster-ui/react
 Import the component API and the package stylesheet:
 
 ```tsx
-import { ArrowRightIcon, Button } from '@faster-ui/react';
+import { ArrowRightIcon, Button, Input, MagnifierIcon } from '@faster-ui/react';
 import '@faster-ui/react/styles.css';
 
 export function SaveButton() {
   return (
-    <Button trailingIcon={<ArrowRightIcon />} type="submit">
-      Save changes
-    </Button>
+    <>
+      <Input leftIcon={<MagnifierIcon />} placeholder="Search" aria-label="Search" />
+      <Button trailingIcon={<ArrowRightIcon />} type="submit">
+        Save changes
+      </Button>
+    </>
   );
 }
 ```
@@ -83,12 +87,63 @@ import { Button, PlusIcon } from '@faster-ui/react';
 <Button leadingIcon={<PlusIcon />} aria-label="Add item" />;
 ```
 
+### Input
+
+`Input` forwards its ref to a native `<input>`. It supports regular native input attributes,
+controlled and uncontrolled values, token-driven error and disabled states, clearable values, and
+optional leading/trailing content. Search, currency, and URL inputs receive helpful automatic
+adornments.
+
+| Prop                     | Values / type    | Default    | Notes                                                                     |
+| ------------------------ | ---------------- | ---------- | ------------------------------------------------------------------------- |
+| `size`                   | `sm`, `md`, `lg` | `md`       | Input heights are 24px, 36px, and 40px.                                   |
+| `leftIcon` / `rightIcon` | `ReactNode`      | —          | Decorative slots before or after the input.                               |
+| `prefix` / `suffix`      | `ReactNode`      | —          | Takes precedence over the matching automatic or manual adornment.         |
+| `currency`               | `string`         | —          | Displays a currency symbol and renders the native input as `type=number`. |
+| `currencyCode`           | `string`         | —          | Optional notation after a currency input, such as `USD` or `EUR`.         |
+| `urlProtocol`            | `string`         | `https://` | Protocol before an input with `type="url"`.                               |
+| `urlSuffix`              | `string`         | —          | Optional suffix after an input with `type="url"`, such as `.com`.         |
+| `clearable`              | `boolean`        | `true`     | Shows a real clear button when the input has a value.                     |
+| `onClear`                | `() => void`     | —          | Called after the clear action requests an empty value.                    |
+| `errorMessage`           | `ReactNode`      | —          | Displays reserved-space feedback and sets `aria-invalid="true"`.          |
+
+```tsx
+import { Input } from '@faster-ui/react';
+
+<Input aria-label="Search documentation" type="search" placeholder="Search" />;
+
+<Input aria-label="Price" currency="$" currencyCode="USD" min="0" placeholder="0.00" />;
+
+<Input
+  aria-label="Website"
+  type="url"
+  urlProtocol="https://"
+  urlSuffix=".com"
+  placeholder="faster-ui"
+/>;
+
+<Input
+  aria-label="Email address"
+  errorMessage="Enter a valid email address."
+  placeholder="name@example.com"
+/>;
+
+<Input aria-label="Quantity" type="number" defaultValue="1" min="0" max="10" />;
+```
+
+`type="search"` adds a decorative magnifier icon. Passing `currency` makes the native control a
+number input and adds native increment/decrement controls; `currencyCode` supplies optional
+notation after it. `type="url"` displays `urlProtocol` and an optional `urlSuffix`. All variants
+can show a clear action. Number inputs omit decorative icon slots. For custom composition,
+`prefix` and `suffix` use nullish precedence over automatic adornments and `leftIcon`/`rightIcon`,
+so even an empty-string affix remains intentional.
+
 ### Icons
 
-`PlusIcon` and `ArrowRightIcon` use `currentColor`, so they inherit their surrounding text color.
-Their public props intentionally include only `className`, `aria-label`, and `aria-labelledby`.
-Icons are decorative (`aria-hidden="true"`) by default; supplying either accessible-label prop
-makes the SVG available to assistive technology.
+`PlusIcon`, `ArrowRightIcon`, and `MagnifierIcon` use `currentColor`, so they inherit their
+surrounding text color. Their public props intentionally include only `className`, `aria-label`,
+and `aria-labelledby`. Icons are decorative (`aria-hidden="true"`) by default; supplying either
+accessible-label prop makes the SVG available to assistive technology.
 
 ## Design tokens and styling
 
@@ -97,12 +152,12 @@ The JSON files in `src/tokens/` are the source of truth. They define:
 - primitive and semantic colors;
 - typography families, weights, and named text styles;
 - radii, shadows, and spacing; and
-- Button dimensions and visual states.
+- Button and Input dimensions and visual states.
 
 `src/tokens/index.ts` resolves token references and exports the TypeScript token API:
 `colorTokens`, `radiusTokens`, `shadowTokens`, `spacingTokens`, `typographyTokens`, and
-`buttonTokens`. `npm run build:tokens` generates `src/styles/tokens.css`, which exposes the same
-values as `--faster-*` custom properties.
+`buttonTokens`, and `inputTokens`. `npm run build:tokens` generates `src/styles/tokens.css`,
+which exposes the same values as `--faster-*` custom properties.
 
 Components use token-backed Tailwind utilities and custom properties rather than raw color
 literals. For example:
@@ -148,6 +203,7 @@ npm run build:tokens
 ```text
 src/
   components/Button/  # Button implementation, types, tests, stories, and barrel export
+  components/Input/   # Input implementation, types, tests, stories, and barrel export
   icons/              # Public SVG icons, narrow prop types, and tests
   tokens/             # JSON token sources, reference definitions, and public token exports
   styles/             # Tailwind entry point and generated token CSS

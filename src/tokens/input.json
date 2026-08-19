@@ -1,0 +1,93 @@
+{
+  "borderWidth": "1px",
+  "borderRadius": "{radius.button}",
+  "fontFamily": "\"PingFang SC\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Helvetica, \"Hiragino Sans GB\", \"Microsoft YaHei\", SimSun, sans-serif",
+  "errorMessageGap": "4px",
+  "large": {
+    "height": "40px",
+    "paddingInline": "12px",
+    "iconSize": "18px",
+    "clearIconSize": "16px",
+    "numberControlSize": "14px",
+    "numberControlHeight": "28px",
+    "controlGap": "8px",
+    "affixSingleGap": "12px",
+    "typography": {
+      "fontSize": "{typography.styles.subtitle.fontSize}",
+      "lineHeight": "{typography.styles.subtitle.lineHeight}",
+      "fontWeight": "{typography.styles.subtitle.fontWeight}"
+    }
+  },
+  "medium": {
+    "height": "36px",
+    "paddingInline": "12px",
+    "iconSize": "16px",
+    "clearIconSize": "14px",
+    "numberControlSize": "12px",
+    "numberControlHeight": "24px",
+    "controlGap": "8px",
+    "affixSingleGap": "12px",
+    "typography": {
+      "fontSize": "{typography.styles.body.fontSize}",
+      "lineHeight": "{typography.styles.body.lineHeight}",
+      "fontWeight": "{typography.styles.body.fontWeight}"
+    }
+  },
+  "small": {
+    "height": "24px",
+    "paddingInline": "8px",
+    "iconSize": "14px",
+    "clearIconSize": "12px",
+    "numberControlSize": "10px",
+    "numberControlHeight": "20px",
+    "controlGap": "4px",
+    "affixSingleGap": "8px",
+    "typography": {
+      "fontSize": "{typography.styles.caption.fontSize}",
+      "lineHeight": "{typography.styles.caption.lineHeight}",
+      "fontWeight": "{typography.styles.caption.fontWeight}"
+    }
+  },
+  "state": {
+    "default": {
+      "background": "{color.white}",
+      "borderColor": "{color.neutral.300}"
+    },
+    "hover": {
+      "background": "{color.white}",
+      "borderColor": "{color.primary.500}"
+    },
+    "focused": {
+      "background": "{color.white}",
+      "borderColor": "{color.primary.600}"
+    },
+    "error": {
+      "background": "{color.white}",
+      "borderColor": "{color.danger.600}"
+    },
+    "disabled": {
+      "background": "{color.neutral.50}",
+      "borderColor": "{color.neutral.200}"
+    }
+  },
+  "text": {
+    "placeholder": "{color.neutral.400}",
+    "value": "{color.neutral.600}",
+    "disabledPlaceholder": "{color.neutral.300}",
+    "disabledValue": "{color.neutral.400}"
+  },
+  "icon": {
+    "default": "{color.neutral.500}",
+    "disabled": "{color.neutral.400}"
+  },
+  "chevron": {
+    "default": "{color.neutral.500}",
+    "disabled": "{color.neutral.400}"
+  },
+  "clear": {
+    "default": "{color.neutral.400}",
+    "hover": "{color.neutral.500}",
+    "active": "{color.neutral.600}",
+    "icon": "{color.white}"
+  }
+}

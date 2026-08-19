@@ -1,15 +1,16 @@
-import { ArrowRightIcon, PlusIcon } from '../../src/icons';
+import { ArrowRightIcon, MagnifierIcon, PlusIcon } from '../../src/icons';
 
 describe('icons', () => {
   it('mounts decorative icons', () => {
     cy.mount(
       <>
         <ArrowRightIcon />
+        <MagnifierIcon />
         <PlusIcon />
       </>,
     );
 
-    cy.get('svg').should('have.length', 2).and('have.attr', 'aria-hidden', 'true');
+    cy.get('svg').should('have.length', 3).and('have.attr', 'aria-hidden', 'true');
   });
 
   it('renders a labelled icon accessibly', () => {

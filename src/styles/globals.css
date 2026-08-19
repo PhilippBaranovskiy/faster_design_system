@@ -338,4 +338,270 @@
     --faster-button-background: var(--faster-button-danger-link-disabled-background);
     --faster-button-text: var(--faster-button-danger-link-disabled-text);
   }
+
+  .faster-input {
+    --faster-input-background: var(--faster-input-state-default-background);
+    --faster-input-border-color: transparent;
+    --faster-input-content-color: var(--faster-input-text-value);
+    --faster-input-placeholder-color: var(--faster-input-text-placeholder);
+    --faster-input-icon-color: var(--faster-input-icon-default);
+    --faster-input-affix-gap: var(--faster-input-current-control-gap);
+
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 0;
+    color: var(--faster-input-content-color);
+    font-family: var(--faster-input-font-family);
+  }
+
+  .faster-input__control {
+    display: flex;
+    min-width: 0;
+    height: var(--faster-input-current-height);
+    align-items: center;
+    border: var(--faster-input-border-width) solid var(--faster-input-border-color);
+    border-radius: var(--faster-input-border-radius);
+    background-color: var(--faster-input-background);
+    padding-inline: var(--faster-input-current-padding-inline);
+  }
+
+  .faster-input--small {
+    --faster-input-current-height: var(--faster-input-small-height);
+    --faster-input-current-padding-inline: var(--faster-input-small-padding-inline);
+    --faster-input-current-icon-size: var(--faster-input-small-icon-size);
+    --faster-input-current-clear-icon-size: var(--faster-input-small-clear-icon-size);
+    --faster-input-current-number-control-size: var(--faster-input-small-number-control-size);
+    --faster-input-current-number-control-height: var(--faster-input-small-number-control-height);
+    --faster-input-current-control-gap: var(--faster-input-small-control-gap);
+    --faster-input-current-affix-single-gap: var(--faster-input-small-affix-single-gap);
+
+    font-size: var(--faster-input-small-typography-font-size);
+    font-weight: var(--faster-input-small-typography-font-weight);
+    line-height: var(--faster-input-small-typography-line-height);
+  }
+
+  .faster-input--medium {
+    --faster-input-current-height: var(--faster-input-medium-height);
+    --faster-input-current-padding-inline: var(--faster-input-medium-padding-inline);
+    --faster-input-current-icon-size: var(--faster-input-medium-icon-size);
+    --faster-input-current-clear-icon-size: var(--faster-input-medium-clear-icon-size);
+    --faster-input-current-number-control-size: var(--faster-input-medium-number-control-size);
+    --faster-input-current-number-control-height: var(--faster-input-medium-number-control-height);
+    --faster-input-current-control-gap: var(--faster-input-medium-control-gap);
+    --faster-input-current-affix-single-gap: var(--faster-input-medium-affix-single-gap);
+
+    font-size: var(--faster-input-medium-typography-font-size);
+    font-weight: var(--faster-input-medium-typography-font-weight);
+    line-height: var(--faster-input-medium-typography-line-height);
+  }
+
+  .faster-input--large {
+    --faster-input-current-height: var(--faster-input-large-height);
+    --faster-input-current-padding-inline: var(--faster-input-large-padding-inline);
+    --faster-input-current-icon-size: var(--faster-input-large-icon-size);
+    --faster-input-current-clear-icon-size: var(--faster-input-large-clear-icon-size);
+    --faster-input-current-number-control-size: var(--faster-input-large-number-control-size);
+    --faster-input-current-number-control-height: var(--faster-input-large-number-control-height);
+    --faster-input-current-control-gap: var(--faster-input-large-control-gap);
+    --faster-input-current-affix-single-gap: var(--faster-input-large-affix-single-gap);
+
+    font-size: var(--faster-input-large-typography-font-size);
+    font-weight: var(--faster-input-large-typography-font-weight);
+    line-height: var(--faster-input-large-typography-line-height);
+  }
+
+  .faster-input:not(.faster-input--disabled):not(.faster-input--error) {
+    --faster-input-border-color: var(--faster-input-state-default-border-color);
+  }
+
+  .faster-input:not(.faster-input--disabled):not(.faster-input--error):hover {
+    --faster-input-background: var(--faster-input-state-hover-background);
+    --faster-input-border-color: var(--faster-input-state-hover-border-color);
+  }
+
+  .faster-input:not(.faster-input--disabled):not(.faster-input--error):focus-within {
+    --faster-input-background: var(--faster-input-state-focused-background);
+    --faster-input-border-color: var(--faster-input-state-focused-border-color);
+  }
+
+  .faster-input--error {
+    --faster-input-background: var(--faster-input-state-error-background);
+    --faster-input-border-color: var(--faster-input-state-error-border-color);
+  }
+
+  .faster-input--disabled {
+    --faster-input-background: var(--faster-input-state-disabled-background);
+    --faster-input-border-color: var(--faster-input-state-disabled-border-color);
+    --faster-input-content-color: var(--faster-input-text-disabled-value);
+    --faster-input-placeholder-color: var(--faster-input-text-disabled-placeholder);
+    --faster-input-icon-color: var(--faster-input-icon-disabled);
+  }
+
+  .faster-input__field {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 auto;
+    appearance: none;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--faster-input-content-color);
+    font: inherit;
+    padding: 0;
+  }
+
+  .faster-input__field::placeholder {
+    color: var(--faster-input-placeholder-color);
+    opacity: 1;
+  }
+
+  .faster-input__field:disabled {
+    cursor: not-allowed;
+  }
+
+  .faster-input__field[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  .faster-input__field[type='number']::-webkit-inner-spin-button,
+  .faster-input__field[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  .faster-input__leading,
+  .faster-input__trailing {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    color: var(--faster-input-icon-color);
+  }
+
+  .faster-input__leading {
+    margin-right: var(--faster-input-affix-gap);
+  }
+
+  .faster-input__trailing {
+    margin-left: var(--faster-input-affix-gap);
+  }
+
+  .faster-input__leading > svg,
+  .faster-input__trailing > svg {
+    display: block;
+    width: var(--faster-input-current-icon-size);
+    height: var(--faster-input-current-icon-size);
+  }
+
+  .faster-input--single-affix {
+    --faster-input-affix-gap: var(--faster-input-current-affix-single-gap);
+  }
+
+  .faster-input--paired-affixes {
+    --faster-input-affix-gap: var(--faster-input-current-control-gap);
+  }
+
+  .faster-input__clear {
+    display: inline-flex;
+    width: var(--faster-input-current-clear-icon-size);
+    height: var(--faster-input-current-clear-icon-size);
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    margin-left: var(--faster-input-current-control-gap);
+    border: 0;
+    border-radius: var(--faster-radius-full);
+    background-color: var(--faster-input-clear-default);
+    color: var(--faster-input-clear-icon);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .faster-input__clear:hover,
+  .faster-input__clear:focus-visible {
+    background-color: var(--faster-input-clear-hover);
+  }
+
+  .faster-input__clear:focus-visible {
+    outline: 2px solid var(--faster-color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .faster-input__clear:active {
+    background-color: var(--faster-input-clear-active);
+  }
+
+  .faster-input__clear svg {
+    display: block;
+    width: 75%;
+    height: 75%;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2.5;
+  }
+
+  .faster-input__number-control {
+    display: flex;
+    width: var(--faster-input-current-number-control-size);
+    height: var(--faster-input-current-number-control-height);
+    flex: 0 0 auto;
+    flex-direction: column;
+    margin-left: var(--faster-input-current-control-gap);
+    color: var(--faster-input-icon-color);
+  }
+
+  .faster-input__number-control button {
+    display: inline-flex;
+    width: 100%;
+    height: 50%;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .faster-input__number-control button:focus-visible {
+    outline: 1px solid var(--faster-color-focus-ring);
+    outline-offset: 1px;
+  }
+
+  .faster-input__number-control button:disabled {
+    cursor: not-allowed;
+  }
+
+  .faster-input__number-control svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .faster-input__chevron {
+    fill: var(--faster-input-chevron-default);
+    stroke: none;
+  }
+
+  .faster-input--disabled .faster-input__chevron {
+    fill: var(--faster-input-chevron-disabled);
+  }
+
+  .faster-input__number-control svg:not(.faster-input__chevron) {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3;
+  }
+
+  .faster-input__error-message {
+    min-height: var(--faster-typography-styles-caption-line-height);
+    margin-top: var(--faster-input-error-message-gap);
+    color: var(--faster-input-border-color);
+    font-family: var(--faster-input-font-family);
+    font-size: var(--faster-typography-styles-caption-font-size);
+    font-weight: var(--faster-typography-styles-caption-font-weight);
+    line-height: var(--faster-typography-styles-caption-line-height);
+  }
 }

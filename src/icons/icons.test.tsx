@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { ArrowRightIcon } from './components/ArrowRightIcon';
+import { MagnifierIcon } from './components/MagnifierIcon';
 import { PlusIcon } from './components/PlusIcon';
 
 const icons = [
   ['ArrowRightIcon', ArrowRightIcon],
+  ['MagnifierIcon', MagnifierIcon],
   ['PlusIcon', PlusIcon],
 ] as const;
 
