@@ -24,16 +24,19 @@ The development server includes a local component playground at `http://127.0.0.
 
 ## Commands
 
-| Command                  | Purpose                                                            |
-| ------------------------ | ------------------------------------------------------------------ |
-| `npm run lint`           | Runs ESLint with warnings treated as errors.                       |
-| `npm run typecheck`      | Checks TypeScript without emitting files.                          |
-| `npm run test`           | Runs Jest and Cypress component tests.                             |
-| `npm run test:component` | Runs headless Cypress component tests.                             |
-| `npm run build`          | Rebuilds the publishable package and GitHub Pages site in `dist/`. |
-| `npm run build:types`    | Emits public TypeScript declarations.                              |
-| `npm run build:library`  | Bundles the npm library entry and stylesheet.                      |
-| `npm run build:pages`    | Builds the static component playground for GitHub Pages.           |
+| Command                    | Purpose                                                            |
+| -------------------------- | ------------------------------------------------------------------ |
+| `npm run lint`             | Runs ESLint with warnings treated as errors.                       |
+| `npm run typecheck`        | Checks TypeScript without emitting files.                          |
+| `npm run test`             | Runs Jest and Cypress component tests.                             |
+| `npm run test:unit`        | Runs Jest unit and accessibility tests.                            |
+| `npm run test:component`   | Runs headless Cypress component tests.                             |
+| `npm run build:storybook`  | Builds the static Storybook preview in `dist/storybook`.           |
+| `npm run build:production` | Rebuilds the publishable package and GitHub Pages site in `dist/`. |
+| `npm run build`            | Runs the production build and Storybook build.                     |
+| `npm run build:types`      | Emits public TypeScript declarations.                              |
+| `npm run build:library`    | Bundles the npm library entry and stylesheet.                      |
+| `npm run build:pages`      | Builds the static component playground for GitHub Pages.           |
 
 Jest covers component behavior and accessibility; Cypress validates browser component mounting and
 interactions.
@@ -53,12 +56,14 @@ Each component folder colocates its TypeScript API, implementation, and public b
 
 ## Distribution and GitHub Pages
 
-`npm run build` clears and recreates `dist/` in four stages:
+`npm run build:production` clears and recreates the production portion of `dist/` in four stages:
 
 1. emits public TypeScript declarations;
 2. bundles the ESM library entry and stylesheet;
 3. builds the static playground; and
 4. leaves the final directory ready to deploy to GitHub Pages.
+
+`npm run build` then adds the static Storybook preview at `dist/storybook`.
 
 The resulting layout is:
 
@@ -203,14 +208,23 @@ npm run build
 
 ## CI/CD
 
-`.github/workflows/ci.yml` runs on pushes and pull requests:
+`.github/workflows/ci.yml` runs the following quality gates on pushes, pull requests, and
+published releases:
 
 1. Install dependencies
 2. Lint
 3. Type check
-4. Production package build
+4. Cypress type check
+5. Jest tests
+6. Cypress component tests
+7. Production build
+8. Storybook build
 
-When a GitHub Release is published, the `publish` job rebuilds the package and publishes it to npm with provenance. Configure npm Trusted Publishing for the GitHub repository/package pair before enabling release publishing.
+When a GitHub Release is published, the gated `publish` job rebuilds the production package and
+publishes it to npm with provenance. Configure npm Trusted Publishing for the GitHub
+repository/package pair before enabling release publishing. The workflow uses npm's OIDC trusted
+publishing flow, so no long-lived `NPM_TOKEN` secret is required after that configuration is
+complete.
 
 ## Publishing and consuming
 
