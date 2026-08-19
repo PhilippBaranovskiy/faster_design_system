@@ -8,6 +8,12 @@ export default defineConfig(({ command }) => ({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
+    rollupOptions: {
+      input: {
+        index: resolve(__dirname, 'index.html'),
+        playground: resolve(__dirname, 'playground/index.html'),
+      },
+    },
   },
   resolve: {
     alias: {
