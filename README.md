@@ -5,6 +5,34 @@ Faster UI is an accessible, ESM React component library published as
 `PlusIcon`, `ArrowRightIcon`, `AttentionIcon`, `CloseIcon`, and `MagnifierIcon` SVG icons, and a public TypeScript API for the
 design tokens that underpin them.
 
+## Quick start
+
+Faster UI requires a React application using **React 18.3+ or React 19** and React DOM.
+
+1. Install the package:
+
+   ```bash
+   npm install @faster-ui/react
+   ```
+
+2. Import the stylesheet once in your application entry point (for example, `main.tsx`):
+
+   ```tsx
+   import '@faster-ui/react/styles.css';
+   ```
+
+3. Import and render components:
+
+   ```tsx
+   import { Button } from '@faster-ui/react';
+
+   export function App() {
+     return <Button>Get started</Button>;
+   }
+   ```
+
+See [Usage](#usage) for a complete example and component-specific guidance.
+
 The repository also ships three development and documentation surfaces:
 
 - a Vite landing page that links to the available previews;
@@ -33,13 +61,9 @@ npm run storybook
 
 It runs on `http://127.0.0.1:6006`.
 
-## Install and use
+## Usage
 
-```bash
-npm install @faster-ui/react
-```
-
-Import the component API and the package stylesheet:
+After completing the quick-start steps, import the component API where it is needed:
 
 ```tsx
 import { useState } from 'react';
