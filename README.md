@@ -1,240 +1,193 @@
 # Faster UI
 
-Faster UI is a small, accessible React component library built as a design-system exercise. It provides a production-oriented **Button** component with semantic design tokens and GitHub Actions automation.
+Faster UI is an accessible, ESM React component library published as
+`@faster-ui/react`. It currently provides a token-driven **Button** component, the `PlusIcon` and
+`ArrowRightIcon` SVG icons, and a public TypeScript API for the design tokens that underpin them.
 
-> The initial token values and component APIs are intentionally centralized so they can be calibrated once the final Figma inspection specifications are supplied.
+The repository also ships three development and documentation surfaces:
 
-## Stack
+- a Vite landing page that links to the available previews;
+- a Vite component playground with implementation examples; and
+- Storybook with interactive, accessibility-enabled component stories.
 
-- React + TypeScript
-- Tailwind CSS with CSS-variable-backed semantic tokens
-- Vite library build
-- GitHub Actions CI and npm release workflow
+## Requirements and local development
 
-## Getting started
-
-**Prerequisite:** Node.js 20.19+ (see `.nvmrc`).
+Use Node.js `>=20.19.0` (see `.nvmrc`) and npm.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-The development server includes a local component playground at `http://127.0.0.1:5173`.
+The Vite server starts at `http://127.0.0.1:5173`. Its root page links to:
 
-## Commands
+- `/playground/` — the Vite component playground; and
+- `/storybook/` — the static Storybook build after `npm run build`.
 
-| Command                    | Purpose                                                            |
-| -------------------------- | ------------------------------------------------------------------ |
-| `npm run lint`             | Runs ESLint with warnings treated as errors.                       |
-| `npm run typecheck`        | Checks TypeScript without emitting files.                          |
-| `npm run test`             | Runs Jest and Cypress component tests.                             |
-| `npm run test:unit`        | Runs Jest unit and accessibility tests.                            |
-| `npm run test:component`   | Runs headless Cypress component tests.                             |
-| `npm run build:storybook`  | Builds the static Storybook preview in `dist/storybook`.           |
-| `npm run build:production` | Rebuilds the publishable package and GitHub Pages site in `dist/`. |
-| `npm run build`            | Runs the production build and Storybook build.                     |
-| `npm run build:types`      | Emits public TypeScript declarations.                              |
-| `npm run build:library`    | Bundles the npm library entry and stylesheet.                      |
-| `npm run build:pages`      | Builds the static component playground for GitHub Pages.           |
+For Storybook’s development server instead, run:
 
-Jest covers component behavior and accessibility; Cypress validates browser component mounting and
-interactions.
-
-## Architecture
-
-```text
-src/
-  components/     # Public, feature-isolated UI components
-  icons/          # Shared, public SVG icon components
-  tokens/         # Token definitions and their public TypeScript API
-  styles/         # Generated token CSS, Tailwind entry point, and global baseline
-  utils/          # Shared class-name and accessibility utilities
+```bash
+npm run storybook
 ```
 
-Each component folder colocates its TypeScript API, implementation, and public barrel export.
+It runs on `http://127.0.0.1:6006`.
 
-## Distribution and GitHub Pages
+## Install and use
 
-`npm run build:production` clears and recreates the production portion of `dist/` in four stages:
-
-1. emits public TypeScript declarations;
-2. bundles the ESM library entry and stylesheet;
-3. builds the static playground; and
-4. leaves the final directory ready to deploy to GitHub Pages.
-
-`npm run build` then adds the static Storybook preview at `dist/storybook`.
-
-The resulting layout is:
-
-```text
-dist/
-  index.js          # npm ESM entry
-  index.d.ts        # npm type entry
-  style.css         # npm stylesheet export
-  components/       # declarations referenced by the public type entry
-  tokens/           # declarations for exported design tokens
-  index.html        # GitHub Pages playground entry
-  assets/           # hashed JS/CSS assets used by index.html
+```bash
+npm install @faster-ui/react
 ```
 
-The `files` allowlist in `package.json` publishes only the library files and declarations to npm; `index.html` and `assets/` are intentionally excluded from the package. The GitHub Actions workflow deploys the full `dist/` directory on pushes to `main`. In the repository's **Settings → Pages**, set the source to **GitHub Actions**.
-
-## Design tokens
-
-The JSON files in `src/tokens/` are the source of truth for primitive and semantic tokens. Tokens are separated by concern—such as `colors.json`, `typography.json`, and `shadows.json`—so each hierarchy can be read and maintained independently. `src/tokens/index.ts` resolves references and exposes the TypeScript API, while `npm run build:tokens` generates `src/styles/tokens.css` for browser and Tailwind consumption. Semantic roles such as `accent`, `textPrimary`, and `border` can reference primitive values without copying their literals.
-
-Components only refer to semantic Tailwind utilities such as `bg-faster-accent` and `text-faster-text-primary`; they do not embed raw color literals. This makes a future visual refresh, theming strategy, or Figma-token synchronization localized to the token layer.
-
-### Color
-
-`colors.json` defines the color system in two layers:
-
-1. **Primitive palettes** preserve the supplied values exactly: black, white, neutral, primary,
-   auxiliary, danger, warning, success, and info.
-2. **Semantic aliases** resolve to those primitives for component use. For example,
-   `color.text.primary` resolves to `color.neutral.700`, while `color.accent` resolves to
-   `color.primary.700`.
-
-This separation lets components use intent-based roles while retaining the complete palette for
-illustrations, data visualizations, and future component states. Each primitive family has steps
-`50`, `100`, `200`, `300`, `400`, `500`, `600`, and `700`; black and white are standalone
-tokens.
-
-| Token family | Intended use                                                          |
-| ------------ | --------------------------------------------------------------------- |
-| `neutral`    | Hue-free text, borders, and surfaces that pair with every brand color |
-| `primary`    | Brand and primary-action color                                        |
-| `auxiliary`  | Supporting brand color                                                |
-| `danger`     | Dangerous, erroneous, or rejected states                              |
-| `warning`    | Warning and in-progress states                                        |
-| `success`    | Successful, correct, or passed states                                 |
-| `info`       | Informational, emotionally neutral states                             |
-
-The generated stylesheet exposes primitives as CSS custom properties—for example,
-`--faster-color-primary-700` and `--faster-color-success-50`—and semantic aliases such as
-`--faster-color-text-primary`, `--faster-color-accent`, and `--faster-color-focus-ring`.
-Tailwind mirrors both layers:
+Import the component API and the package stylesheet:
 
 ```tsx
-<div className="border border-faster-border bg-faster-primary-50 text-faster-text-primary" />
-<p className="text-faster-danger">Unable to save changes.</p>
-```
+import { ArrowRightIcon, Button } from '@faster-ui/react';
+import '@faster-ui/react/styles.css';
 
-### Typography
-
-Typography is tokenized in `typography` with the prescribed system font stack, a dedicated
-`Consolas`-first monospace stack, and regular (`400`) and medium (`500`) weights. The seven
-named text styles are available as CSS utilities:
-
-| Utility                | Size / line height | Default weight |
-| ---------------------- | ------------------ | -------------- |
-| `faster-type-h1`       | 30px / 38px        | Medium         |
-| `faster-type-h2`       | 24px / 32px        | Medium         |
-| `faster-type-h3`       | 20px / 28px        | Medium         |
-| `faster-type-title`    | 18px / 26px        | Medium         |
-| `faster-type-subtitle` | 16px / 24px        | Medium         |
-| `faster-type-body`     | 14px / 22px        | Regular        |
-| `faster-type-caption`  | 12px / 18px        | Regular        |
-
-The base `body` uses the Body style; `code`, `kbd`, `pre`, and `samp` use the monospace stack.
-Button labels use the relevant scale size with the Medium weight to preserve action emphasis.
-The system font stack intentionally does not load web fonts: it resolves to the platform’s
-available SF/PingFang, Segoe UI, Roboto, Helvetica, and CJK fallbacks.
-
-### Shadows and elevation
-
-Elevation is expressed as four semantic, layered shadow tokens. Use the lowest elevation that
-communicates the element’s surface hierarchy; elevation is not a substitute for a focus
-indicator, selected state, or disabled state. The values use black (`#000000`) with the
-specified opacity per layer, and each token is ready to apply directly with `box-shadow`.
-
-| Token               | Intended hierarchy                       | Layer 1: x / y / blur / spread / opacity | Layer 2: x / y / blur / spread / opacity |
-| ------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `shadow.elevation1` | Slightly raised, persistent surfaces     | 0 / 1px / 1px / 0 / 2%                   | 0 / 2px / 4px / 0 / 4%                   |
-| `shadow.elevation2` | Raised controls and contained surfaces   | 0 / 1px / 4px / 0 / 4%                   | 0 / 4px / 10px / 0 / 8%                  |
-| `shadow.elevation3` | Temporary or prominently raised surfaces | 0 / 2px / 20px / 0 / 4%                  | 0 / 8px / 32px / 0 / 8%                  |
-| `shadow.elevation4` | Highest-priority overlays                | 0 / 8px / 20px / 0 / 6%                  | 0 / 24px / 60px / 0 / 12%                |
-
-Use the generated CSS variables directly when styling a component:
-
-```css
-.popover {
-  box-shadow: var(--faster-shadow-elevation3);
+export function SaveButton() {
+  return (
+    <Button trailingIcon={<ArrowRightIcon />} type="submit">
+      Save changes
+    </Button>
+  );
 }
 ```
 
-The equivalent resolved values are exported as `shadowTokens` from the package token API.
-
-## Component decisions
-
 ### Button
 
-- Three sizes: `sm` (24px), `md` (36px), and `lg` (40px)
-- Four modes: `primary`, `outline`, `ghost`, and `link`
-- Three visual kinds: `button`, `danger`, and `iconButton`
-- Text-only, leading- or trailing-icon-with-label, and icon-only layouts (both icon slots cannot
-  be used together)
-- Native button behavior plus disabled and loading states
-- `aria-busy` conveys loading state and loading disables repeat activation
-- Either icon slot becomes an `iconButton` automatically when no label is supplied
-- All visual state values are semantic Button tokens. Native `:hover`, `:active`, and
-  `:disabled` selectors apply the corresponding Hover, Pressed, and Disabled token set.
-- Button icon slots inherit the button text color through `currentColor`.
+`Button` renders a native `<button>` and forwards its ref. In addition to standard native button
+attributes, it accepts:
+
+| Prop                           | Values                                | Default   | Notes                                                   |
+| ------------------------------ | ------------------------------------- | --------- | ------------------------------------------------------- |
+| `kind`                         | `button`, `danger`, `iconButton`      | inferred  | Icon-only content infers `iconButton` when omitted.     |
+| `mode`                         | `primary`, `outline`, `ghost`, `link` | `primary` | `link` resolves to `primary` for icon buttons.          |
+| `size`                         | `sm`, `md`, `lg`                      | `md`      | Button heights are 24px, 36px, and 40px.                |
+| `leadingIcon` / `trailingIcon` | `ReactNode`                           | —         | Provide at most one icon slot.                          |
+| `loading`                      | `boolean`                             | `false`   | Disables the native button and sets `aria-busy="true"`. |
+
+Text buttons can have no icon, a leading icon, or a trailing icon:
 
 ```tsx
 <Button mode="outline">Edit profile</Button>
 <Button kind="danger" mode="ghost">Remove member</Button>
-<Button mode="link">Learn more</Button>
-<Button leadingIcon={<ArrowRightIcon />} aria-label="Continue" />
+<Button trailingIcon={<ArrowRightIcon />}>Continue</Button>
 ```
 
-`link` is intentionally not available for `iconButton`; if requested for an icon-only layout, the
-component uses the `primary` icon-button treatment.
+For an icon-only button, omit visible content and provide an accessible name with `aria-label` or
+`aria-labelledby`. The component throws if an icon-only button has no accessible name.
+
+```tsx
+import { Button, PlusIcon } from '@faster-ui/react';
+
+<Button leadingIcon={<PlusIcon />} aria-label="Add item" />;
+```
 
 ### Icons
 
-`PlusIcon` and `ArrowRightIcon` are exported from the library and used by the playground. Icons
-use `currentColor`, accept only their documented `className`, `aria-label`, and
-`aria-labelledby` props, and default to decorative (`aria-hidden`) unless an accessible SVG label is supplied. Button-provided icons are sized by the Button size tokens.
+`PlusIcon` and `ArrowRightIcon` use `currentColor`, so they inherit their surrounding text color.
+Their public props intentionally include only `className`, `aria-label`, and `aria-labelledby`.
+Icons are decorative (`aria-hidden="true"`) by default; supplying either accessible-label prop
+makes the SVG available to assistive technology.
 
-Run all required local gates before submitting:
+## Design tokens and styling
 
-```bash
-npm run lint
-npm run typecheck
-npm run build
-```
+The JSON files in `src/tokens/` are the source of truth. They define:
 
-## CI/CD
+- primitive and semantic colors;
+- typography families, weights, and named text styles;
+- radii, shadows, and spacing; and
+- Button dimensions and visual states.
 
-`.github/workflows/ci.yml` runs the following quality gates on pushes, pull requests, and
-published releases:
+`src/tokens/index.ts` resolves token references and exports the TypeScript token API:
+`colorTokens`, `radiusTokens`, `shadowTokens`, `spacingTokens`, `typographyTokens`, and
+`buttonTokens`. `npm run build:tokens` generates `src/styles/tokens.css`, which exposes the same
+values as `--faster-*` custom properties.
 
-1. Install dependencies
-2. Lint
-3. Type check
-4. Cypress type check
-5. Jest tests
-6. Cypress component tests
-7. Production build
-8. Storybook build
-
-When a GitHub Release is published, the gated `publish` job rebuilds the production package and
-publishes it to npm with provenance. Configure npm Trusted Publishing for the GitHub
-repository/package pair before enabling release publishing. The workflow uses npm's OIDC trusted
-publishing flow, so no long-lived `NPM_TOKEN` secret is required after that configuration is
-complete.
-
-## Publishing and consuming
-
-Update `name` and `version` in `package.json` for the intended npm scope, then create a GitHub Release after CI is green.
+Components use token-backed Tailwind utilities and custom properties rather than raw color
+literals. For example:
 
 ```tsx
-import { Button } from '@faster-ui/react';
-import '@faster-ui/react/styles.css';
+<div className="border border-faster-border bg-faster-primary-50 text-faster-text-primary" />
 ```
 
-## Next calibration pass
+The named typography utilities are `faster-type-h1`, `faster-type-h2`, `faster-type-h3`,
+`faster-type-title`, `faster-type-subtitle`, `faster-type-body`, and `faster-type-caption`.
+All currently use the regular (`400`) token weight; controls and selected interface text apply the
+medium (`500`) token weight where needed.
 
-When final Figma component specifications are available, use the Inspect panel to map exact typography, dimensions, radii, elevation, color/state tokens, and responsive behavior into the token files.
+Do not edit `src/styles/tokens.css` directly. Update the source JSON and regenerate it:
+
+```bash
+npm run build:tokens
+```
+
+## Commands
+
+| Command                                         | Purpose                                                                                     |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `npm run dev`                                   | Starts Vite on `127.0.0.1:5173`; the root page links to the playground and built Storybook. |
+| `npm run storybook`                             | Starts Storybook on port 6006.                                                              |
+| `npm run lint` / `npm run lint:fix`             | Checks the repository with ESLint, or applies ESLint fixes. Warnings fail the check.        |
+| `npm run format` / `npm run format:check`       | Writes or checks Prettier formatting.                                                       |
+| `npm run typecheck`                             | Runs the main TypeScript no-emit check.                                                     |
+| `npm run typecheck:component`                   | Type-checks Cypress component-test files.                                                   |
+| `npm run test:unit`                             | Runs Jest unit and accessibility tests.                                                     |
+| `npm run test:component`                        | Runs Cypress component tests in Electron.                                                   |
+| `npm run test`                                  | Runs token freshness, lint, formatting, both type checks, Jest, and Cypress.                |
+| `npm run build:tokens` / `npm run check:tokens` | Regenerates token CSS or verifies that it is current.                                       |
+| `npm run build:types`                           | Emits declarations from the public `src/index.ts` entry.                                    |
+| `npm run build:library`                         | Bundles the ESM library entry and extracted stylesheet.                                     |
+| `npm run build:pages`                           | Builds the Vite landing page and playground.                                                |
+| `npm run build:production`                      | Cleans `dist/`, then generates tokens, declarations, library assets, and Vite pages.        |
+| `npm run build:storybook`                       | Builds Storybook into `dist/storybook`.                                                     |
+| `npm run build`                                 | Runs the production build followed by the Storybook build.                                  |
+
+## Repository structure
+
+```text
+src/
+  components/Button/  # Button implementation, types, tests, stories, and barrel export
+  icons/              # Public SVG icons, narrow prop types, and tests
+  tokens/             # JSON token sources, reference definitions, and public token exports
+  styles/             # Tailwind entry point and generated token CSS
+  dev.tsx             # Vite playground entry
+  landing.tsx         # Vite root landing-page entry
+cypress/              # Cypress component specs and support files
+.storybook/           # Storybook configuration and global style import
+scripts/              # Token-CSS generator
+```
+
+`src/index.ts` is the library entry point: it imports the library stylesheet and re-exports the
+public components, icons, and token API. React and React DOM are peer dependencies and external to
+the library bundle.
+
+## Builds, distribution, and deployment
+
+`npm run build:production` recreates the publishable and Vite-page portion of `dist/` in this
+order:
+
+1. cleans `dist/`;
+2. regenerates `src/styles/tokens.css`;
+3. emits public declarations;
+4. bundles the ESM library and stylesheet; and
+5. builds the root landing page and `/playground/` page.
+
+`npm run build` then adds Storybook at `dist/storybook`. The deployed directory therefore includes
+the landing page at `dist/index.html`, the Vite playground at `dist/playground/index.html`, and
+the Storybook site at `dist/storybook/index.html`.
+
+The `files` allowlist in `package.json` publishes the library JS, CSS, declarations, README, and
+license; it excludes the Vite pages, their hashed assets, and Storybook. GitHub Actions deploys
+the full `dist/` directory to GitHub Pages after successful quality checks on pushes to `main`.
+Configure the repository’s Pages source as **GitHub Actions**.
+
+## Quality and release workflow
+
+On pull requests, pushes to `main`, and published GitHub Releases, CI installs with `npm ci` and
+runs linting, the main and Cypress TypeScript checks, Jest, Cypress component tests, the
+production build, and the Storybook build.
+
+When a GitHub Release is published and those checks pass, the `publish` job rebuilds the
+production package and runs `npm publish --provenance`. Configure npm Trusted Publishing for the
+repository/package pair; the workflow uses OIDC and does not require a long-lived `NPM_TOKEN`.
