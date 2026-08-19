@@ -80,6 +80,21 @@ describe('Input', () => {
     expect(screen.queryByRole('button', { name: 'Clear input' })).not.toBeInTheDocument();
   });
 
+  it('updates an uncontrolled value through typing and exposes the clear action', async () => {
+    const user = userEvent.setup();
+    const onChange = jest.fn();
+
+    render(<Input aria-label="Search" onChange={onChange} />);
+
+    const input = screen.getByRole('textbox', { name: 'Search' });
+
+    await user.type(input, 'Faster');
+
+    expect(input).toHaveValue('Faster');
+    expect(onChange).toHaveBeenCalledTimes(6);
+    expect(screen.getByRole('button', { name: 'Clear input' })).toBeInTheDocument();
+  });
+
   it('clears a controlled input when its parent responds to onChange', async () => {
     const user = userEvent.setup();
 
@@ -112,6 +127,18 @@ describe('Input', () => {
     expect(screen.queryByRole('button', { name: 'Clear input' })).not.toBeInTheDocument();
   });
 
+  it('renders a disabled input state and disables number controls', () => {
+    render(<Input aria-label="Quantity" type="number" defaultValue="2" disabled />);
+
+    const input = screen.getByRole('spinbutton', { name: 'Quantity' });
+
+    expect(input).toBeDisabled();
+    expect(input.closest('.faster-input')).toHaveClass('faster-input--disabled');
+    expect(input.closest('.faster-input')).toHaveAttribute('data-state', 'disabled');
+    expect(screen.getByRole('button', { name: 'Increase value' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Decrease value' })).toBeDisabled();
+  });
+
   it('uses the error state, exposes the message, and reserves error-message space', () => {
     const { rerender } = render(<Input aria-label="Email" errorMessage="Enter a valid email." />);
 
@@ -126,6 +153,26 @@ describe('Input', () => {
     rerender(<Input aria-label="Email" />);
 
     expect(wrapper?.querySelector('.faster-input__error-message')).toBeInTheDocument();
+  });
+
+  it('combines external descriptions with an announced error message', () => {
+    render(
+      <>
+        <span id="email-help">Use your work email address.</span>
+        <Input
+          id="email"
+          aria-label="Email"
+          aria-describedby="email-help"
+          errorMessage="Enter a valid email."
+        />
+      </>,
+    );
+
+    const input = screen.getByRole('textbox', { name: 'Email' });
+    const errorMessage = screen.getByText('Enter a valid email.');
+
+    expect(input).toHaveAttribute('aria-describedby', `email-help ${errorMessage.id}`);
+    expect(errorMessage).toHaveAttribute('aria-live', 'polite');
   });
 
   it('adds a magnifier icon to search inputs and supports clearing them', () => {
@@ -239,6 +286,21 @@ describe('Input', () => {
         defaultValue="Faster"
         leftIcon={<MagnifierIcon />}
         errorMessage="Try another search term."
+      />,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('has no accessibility violations for a labelled number input with controls', async () => {
+    const { container } = render(
+      <Input
+        aria-label="Quantity"
+        type="number"
+        defaultValue="2"
+        min="0"
+        max="5"
+        errorMessage="Quantity must be between 0 and 5."
       />,
     );
 

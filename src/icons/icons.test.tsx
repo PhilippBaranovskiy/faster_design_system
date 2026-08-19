@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { createRef } from 'react';
 import { ArrowRightIcon } from './components/ArrowRightIcon';
 import { MagnifierIcon } from './components/MagnifierIcon';
@@ -45,5 +46,18 @@ describe('icons', () => {
 
     expect(icon).toHaveAttribute('aria-labelledby', 'icon-label');
     expect(icon).not.toHaveAttribute('aria-hidden');
+  });
+
+  it('has no accessibility violations for decorative and labelled icons', async () => {
+    const { container } = render(
+      <>
+        <ArrowRightIcon />
+        <MagnifierIcon aria-label="Search" />
+        <span id="add-label">Add item</span>
+        <PlusIcon aria-labelledby="add-label" />
+      </>,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
