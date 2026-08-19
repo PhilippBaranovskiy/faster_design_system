@@ -1,7 +1,31 @@
 import { Button } from '../../src/components/Button';
 import { Dialog } from '../../src/components/Dialog';
+import { useState } from 'react';
+
+function ControlledDialog() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Dialog title="Delete project" open={open} onClose={() => setOpen(false)}>
+        This action cannot be undone.
+      </Dialog>
+    </>
+  );
+}
 
 describe('Dialog', () => {
+  it('opens from a trigger and closes from its close control', () => {
+    cy.mount(<ControlledDialog />);
+
+    cy.get('[role="dialog"]').should('not.exist');
+    cy.contains('button', 'Open dialog').click();
+    cy.get('[role="dialog"]').should('be.visible');
+    cy.get('button[aria-label="Close dialog"]').click();
+    cy.get('[role="dialog"]').should('not.exist');
+  });
+
   it('mounts its default modal structure and invokes the close callback', () => {
     const onClose = cy.spy().as('onClose');
 
