@@ -83,6 +83,7 @@ const config: Config = {
           'text-primary': 'var(--faster-color-text-primary)',
           'text-secondary': 'var(--faster-color-text-secondary)',
           'text-inverse': 'var(--faster-color-text-inverse)',
+          overlay: 'var(--faster-color-overlay)',
           border: 'var(--faster-color-border)',
           'border-strong': 'var(--faster-color-border-strong)',
           accent: 'var(--faster-color-accent)',

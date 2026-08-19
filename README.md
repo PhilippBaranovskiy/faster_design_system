@@ -1,8 +1,8 @@
 # Faster UI
 
 Faster UI is an accessible, ESM React component library published as
-`@faster-ui/react`. It currently provides token-driven **Button** and **Input** components, the
-`PlusIcon`, `ArrowRightIcon`, and `MagnifierIcon` SVG icons, and a public TypeScript API for the
+`@faster-ui/react`. It currently provides token-driven **Button**, **Dialog**, and **Input** components, the
+`PlusIcon`, `ArrowRightIcon`, `AttentionIcon`, `CloseIcon`, and `MagnifierIcon` SVG icons, and a public TypeScript API for the
 design tokens that underpin them.
 
 The repository also ships three development and documentation surfaces:
@@ -42,16 +42,22 @@ npm install @faster-ui/react
 Import the component API and the package stylesheet:
 
 ```tsx
-import { ArrowRightIcon, Button, Input, MagnifierIcon } from '@faster-ui/react';
+import { useState } from 'react';
+import { ArrowRightIcon, Button, Dialog, Input, MagnifierIcon } from '@faster-ui/react';
 import '@faster-ui/react/styles.css';
 
 export function SaveButton() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <>
       <Input leftIcon={<MagnifierIcon />} placeholder="Search" aria-label="Search" />
-      <Button trailingIcon={<ArrowRightIcon />} type="submit">
+      <Button trailingIcon={<ArrowRightIcon />} type="button" onClick={() => setIsDialogOpen(true)}>
         Save changes
       </Button>
+      <Dialog title="Changes saved" onClose={() => setIsDialogOpen(false)} open={isDialogOpen}>
+        Your changes are now available to collaborators.
+      </Dialog>
     </>
   );
 }
@@ -85,6 +91,44 @@ For an icon-only button, omit visible content and provide an accessible name wit
 import { Button, PlusIcon } from '@faster-ui/react';
 
 <Button leadingIcon={<PlusIcon />} aria-label="Add item" />;
+```
+
+### Dialog
+
+`Dialog` renders an accessible modal dialog with a visible title, a close control, optional icon,
+and optional right-aligned footer actions. It forwards its ref to the dialog element. Render it
+with `open={false}` to remove it from the page; call the supplied `onClose` handler to update the
+owning state when a user presses the close button, Escape, or an enabled backdrop.
+
+| Prop                   | Values / type                    | Default  | Notes                                                                            |
+| ---------------------- | -------------------------------- | -------- | -------------------------------------------------------------------------------- |
+| `title`                | `ReactNode`                      | required | Visible title that labels the dialog.                                            |
+| `onClose`              | `() => void`                     | required | Called when the component requests that its owner close it.                      |
+| `open`                 | `boolean`                        | `true`   | When `false`, the dialog is not rendered.                                        |
+| `size`                 | `sm`, `md`, `lg`                 | `md`     | Maximum widths are 400px, 600px, and 900px.                                      |
+| `variant`              | `basic`, `scrollable`, `divider` | `basic`  | Scrollable fixes the title/footer while the body scrolls; divider adds rules.    |
+| `preset`               | `warning`                        | —        | Shows the Warning/600 attention icon and makes the primary footer Button danger. |
+| `icon` / `footer`      | `ReactNode`                      | —        | Icon precedes body content; footer actions are right-aligned with an 8px gap.    |
+| `bodyMinHeight`        | CSS `min-height` value           | —        | Reserves a body area for short content without affecting compact dialogs.        |
+| `closeOnEscape`        | `boolean`                        | `true`   | Enables Escape-key close requests.                                               |
+| `closeOnBackdropClick` | `boolean`                        | `false`  | Enables backdrop click close requests.                                           |
+
+```tsx
+import { Button, Dialog } from '@faster-ui/react';
+
+<Dialog
+  title="Delete project"
+  preset="warning"
+  onClose={() => setIsDeleteDialogOpen(false)}
+  footer={
+    <>
+      <Button mode="link">Cancel</Button>
+      <Button kind="danger">Delete</Button>
+    </>
+  }
+>
+  Deleting this project permanently removes its data.
+</Dialog>;
 ```
 
 ### Input
@@ -140,7 +184,7 @@ so even an empty-string affix remains intentional.
 
 ### Icons
 
-`PlusIcon`, `ArrowRightIcon`, and `MagnifierIcon` use `currentColor`, so they inherit their
+`PlusIcon`, `ArrowRightIcon`, `AttentionIcon`, `CloseIcon`, and `MagnifierIcon` use `currentColor`, so they inherit their
 surrounding text color. Their public props intentionally include only `className`, `aria-label`,
 and `aria-labelledby`. Icons are decorative (`aria-hidden="true"`) by default; supplying either
 accessible-label prop makes the SVG available to assistive technology.
@@ -152,11 +196,11 @@ The JSON files in `src/tokens/` are the source of truth. They define:
 - primitive and semantic colors;
 - typography families, weights, and named text styles;
 - radii, shadows, and spacing; and
-- Button and Input dimensions and visual states.
+- Button, Dialog, and Input dimensions and visual states.
 
 `src/tokens/index.ts` resolves token references and exports the TypeScript token API:
 `colorTokens`, `radiusTokens`, `shadowTokens`, `spacingTokens`, `typographyTokens`, and
-`buttonTokens`, and `inputTokens`. `npm run build:tokens` generates `src/styles/tokens.css`,
+`buttonTokens`, `dialogTokens`, and `inputTokens`. `npm run build:tokens` generates `src/styles/tokens.css`,
 which exposes the same values as `--faster-*` custom properties.
 
 Components use token-backed Tailwind utilities and custom properties rather than raw color
@@ -203,6 +247,7 @@ npm run build:tokens
 ```text
 src/
   components/Button/  # Button implementation, types, tests, stories, and barrel export
+  components/Dialog/  # Dialog implementation, types, tests, stories, and barrel export
   components/Input/   # Input implementation, types, tests, stories, and barrel export
   icons/              # Public SVG icons, narrow prop types, and tests
   tokens/             # JSON token sources, reference definitions, and public token exports

@@ -62,6 +62,7 @@
   --faster-color-text-secondary: #4b4b4b;
   --faster-color-text-inverse: #ffffff;
   --faster-color-surface: #ffffff;
+  --faster-color-overlay: rgba(0, 0, 0, 0.4);
   --faster-color-border: #e1e1e1;
   --faster-color-border-strong: #cacaca;
   --faster-color-accent: #00abb6;
@@ -69,6 +70,19 @@
   --faster-color-danger-default: #ec2d30;
   --faster-color-danger-hover: #f64c4c;
   --faster-color-focus-ring: #00abb6;
+  --faster-dialog-small-width: 400px;
+  --faster-dialog-medium-width: 600px;
+  --faster-dialog-large-width: 900px;
+  --faster-dialog-radius: 4px;
+  --faster-dialog-padding-basic: 24px;
+  --faster-dialog-padding-divider: 16px;
+  --faster-dialog-spacing-header-body: 16px;
+  --faster-dialog-spacing-icon-body: 8px;
+  --faster-dialog-spacing-footer-actions: 8px;
+  --faster-dialog-spacing-basic-footer: 32px;
+  --faster-dialog-spacing-divider-footer: 16px;
+  --faster-dialog-spacing-viewport-inset: 24px;
+  --faster-dialog-minimum-body-height: 120px;
   --faster-input-border-width: 1px;
   --faster-input-border-radius: 4px;
   --faster-input-font-family:

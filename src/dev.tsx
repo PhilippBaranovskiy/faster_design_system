@@ -1,5 +1,17 @@
 import { createRoot } from 'react-dom/client';
-import { ArrowRightIcon, Button, Input, MagnifierIcon, PlusIcon, buttonTokens } from './index';
+import { useState } from 'react';
+import {
+  ArrowRightIcon,
+  Button,
+  Dialog,
+  Input,
+  MagnifierIcon,
+  PlusIcon,
+  buttonTokens,
+  type DialogPreset,
+  type DialogSize,
+  type DialogVariant,
+} from './index';
 import './styles/globals.css';
 
 const buttonModes = ['primary', 'outline', 'ghost', 'link'] as const;
@@ -15,7 +27,88 @@ const sizes = [
   { value: 'sm', label: 'Small', height: '24px' },
 ] as const;
 
+const dialogSizes = [
+  { value: 'sm', label: 'Small', width: '400px' },
+  { value: 'md', label: 'Medium', width: '600px' },
+  { value: 'lg', label: 'Large', width: '900px' },
+] as const satisfies ReadonlyArray<{ value: DialogSize; label: string; width: string }>;
+
+const dialogVariants = [
+  {
+    value: 'basic',
+    preset: undefined,
+    label: 'Basic',
+    description: '24px padding with compact body content.',
+  },
+  {
+    value: 'basic',
+    preset: 'warning',
+    label: 'Warning',
+    description: 'Attention icon with a destructive primary action.',
+  },
+  {
+    value: 'scrollable',
+    preset: undefined,
+    label: 'Scrollable',
+    description: 'Fixed title and footer with a native scrolling body.',
+  },
+  {
+    value: 'divider',
+    preset: undefined,
+    label: 'With divider',
+    description: '16px padding with section dividers.',
+  },
+] as const satisfies ReadonlyArray<{
+  value: DialogVariant;
+  preset?: DialogPreset;
+  label: string;
+  description: string;
+}>;
+
+type DialogExample = {
+  preset?: DialogPreset;
+  size: DialogSize;
+  variant: DialogVariant;
+};
+
+function ScrollableDialogContent() {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: 24 }, (_, index) => (
+        <p key={index} className="m-0">
+          Scrollable content row {index + 1}. This content remains inside the dialog body while the
+          title and footer stay visible.
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function DividerDialogContent() {
+  return (
+    <div className="space-y-3">
+      <p className="m-0">
+        This layout separates the dialog header, body, and footer with divider lines to make each
+        section easy to scan.
+      </p>
+      <p className="m-0">
+        The additional body content demonstrates how the divided layout accommodates longer messages
+        while preserving clear visual hierarchy.
+      </p>
+    </div>
+  );
+}
+
 function Playground() {
+  const [activeDialog, setActiveDialog] = useState<DialogExample | null>(null);
+  const [bodyExample, setBodyExample] = useState<'icon' | 'minimumHeight' | 'noFooter' | null>(
+    null,
+  );
+  const activeDialogVariant = dialogVariants.find(
+    ({ value, preset }) => value === activeDialog?.variant && preset === activeDialog?.preset,
+  );
+  const activeDialogSize = dialogSizes.find(({ value }) => value === activeDialog?.size);
+
   return (
     <main className="mx-auto flex min-h-screen w-full min-w-[56rem] flex-col gap-10 p-8 sm:p-12">
       <header className="mx-auto w-full max-w-4xl space-y-3">
@@ -24,7 +117,7 @@ function Playground() {
         </p>
         <h1 className="faster-type-h1 m-0">Component playground</h1>
         <p className="faster-type-body m-0 max-w-2xl text-faster-text-secondary">
-          A local development surface for the published Button and Input components.
+          A local development surface for the published Button, Dialog, and Input components.
         </p>
       </header>
 
@@ -177,6 +270,140 @@ function Playground() {
             />
           </div>
         </section>
+      </section>
+
+      <section aria-labelledby="dialogs-heading" className="mx-auto w-full max-w-4xl space-y-4">
+        <h2 id="dialogs-heading" className="faster-type-title m-0">
+          Dialog
+        </h2>
+        <p className="faster-type-body m-0 max-w-2xl text-faster-text-secondary">
+          Open every width and layout combination. The scrollable examples contain enough content to
+          demonstrate the fixed title and footer while the body uses native browser scrolling.
+        </p>
+        <div className="overflow-x-auto rounded-[var(--faster-radius-button)] border border-faster-border">
+          <table className="faster-type-body w-full min-w-[42rem] border-collapse text-left">
+            <thead>
+              <tr className="faster-type-caption border-b border-faster-border uppercase tracking-[0.12em] text-faster-text-secondary [font-weight:var(--faster-typography-font-weight-medium)]">
+                <th className="px-4 py-3">Configuration</th>
+                {dialogSizes.map(({ label, width }) => (
+                  <th key={label} className="px-4 py-3">
+                    {label}
+                    <span className="normal-case"> ({width})</span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {dialogVariants.map(({ value: variant, preset, label, description }) => (
+                <tr
+                  key={`${variant}-${preset ?? 'default'}`}
+                  className="border-b border-faster-border last:border-b-0"
+                >
+                  <th scope="row" className="w-56 px-4 py-3 align-top">
+                    <span className="block [font-weight:var(--faster-typography-font-weight-medium)]">
+                      {label}
+                    </span>
+                    <span className="faster-type-caption mt-1 block text-faster-text-secondary">
+                      {description}
+                    </span>
+                  </th>
+                  {dialogSizes.map(({ value: size, label: sizeLabel }) => (
+                    <td key={size} className="px-4 py-3">
+                      <Button
+                        kind={preset === 'warning' ? 'danger' : undefined}
+                        onClick={() => setActiveDialog({ preset, size, variant })}
+                      >
+                        Open {sizeLabel}
+                      </Button>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <section
+          aria-labelledby="dialog-body-options-heading"
+          className="space-y-3 rounded-[var(--faster-radius-button)] border border-faster-border p-4"
+        >
+          <h3 id="dialog-body-options-heading" className="faster-type-subtitle m-0">
+            Body options
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            <Button mode="outline" onClick={() => setBodyExample('icon')}>
+              Open with icon
+            </Button>
+            <Button mode="outline" onClick={() => setBodyExample('minimumHeight')}>
+              Open with minimum body height
+            </Button>
+            <Button mode="outline" onClick={() => setBodyExample('noFooter')}>
+              Open without footer
+            </Button>
+          </div>
+        </section>
+
+        {activeDialog ? (
+          <Dialog
+            title={`${activeDialogVariant?.label} / ${activeDialogSize?.label}`}
+            size={activeDialog.size}
+            preset={activeDialog.preset}
+            variant={activeDialog.variant}
+            onClose={() => setActiveDialog(null)}
+            footer={
+              <>
+                <Button mode="ghost" onClick={() => setActiveDialog(null)}>
+                  Cancel
+                </Button>
+                <Button onClick={() => setActiveDialog(null)}>
+                  {activeDialog.preset === 'warning' ? 'Delete' : 'Continue'}
+                </Button>
+              </>
+            }
+          >
+            {activeDialog.variant === 'scrollable' ? (
+              <ScrollableDialogContent />
+            ) : activeDialog.variant === 'divider' ? (
+              <DividerDialogContent />
+            ) : (
+              <p className="m-0">
+                {activeDialog.preset === 'warning'
+                  ? 'Deleting this project permanently removes its data and cannot be undone.'
+                  : `This ${activeDialogVariant?.label.toLowerCase()} dialog demonstrates the ${activeDialogSize?.width} width.`}
+              </p>
+            )}
+          </Dialog>
+        ) : null}
+
+        {bodyExample ? (
+          <Dialog
+            title={
+              bodyExample === 'icon'
+                ? 'Dialog with icon'
+                : bodyExample === 'minimumHeight'
+                  ? 'Dialog with minimum body height'
+                  : 'Dialog without footer'
+            }
+            bodyMinHeight={bodyExample === 'minimumHeight' ? 160 : undefined}
+            icon={bodyExample === 'icon' ? <PlusIcon /> : undefined}
+            onClose={() => setBodyExample(null)}
+            footer={
+              bodyExample === 'noFooter' ? undefined : (
+                <>
+                  <Button mode="ghost" onClick={() => setBodyExample(null)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={() => setBodyExample(null)}>Continue</Button>
+                </>
+              )
+            }
+          >
+            <p className="m-0">
+              Two lines of body content show how optional icons, reserved minimum body space, and an
+              omitted action area affect the dialog layout.
+            </p>
+          </Dialog>
+        ) : null}
       </section>
 
       <section aria-labelledby="layouts-heading" className="space-y-4">

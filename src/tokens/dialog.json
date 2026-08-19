@@ -1,0 +1,25 @@
+{
+  "small": {
+    "width": "400px"
+  },
+  "medium": {
+    "width": "600px"
+  },
+  "large": {
+    "width": "900px"
+  },
+  "radius": "{radius.button}",
+  "padding": {
+    "basic": "24px",
+    "divider": "16px"
+  },
+  "spacing": {
+    "headerBody": "16px",
+    "iconBody": "8px",
+    "footerActions": "8px",
+    "basicFooter": "32px",
+    "dividerFooter": "16px",
+    "viewportInset": "24px"
+  },
+  "minimumBodyHeight": "120px"
+}

@@ -1,5 +1,6 @@
 import button from './button.json';
 import colors from './colors.json';
+import dialog from './dialog.json';
 import input from './input.json';
 import radius from './radius.json';
 import shadow from './shadows.json';
@@ -8,6 +9,7 @@ import typography from './typography.json';
 
 const tokenDefinitions = {
   color: colors,
+  dialog,
   input,
   radius,
   shadow,
@@ -62,6 +64,7 @@ const resolvedTokenDefinitions = resolveGroup(
 ) as typeof tokenDefinitions;
 
 export const colorTokens = resolvedTokenDefinitions.color;
+export const dialogTokens = resolvedTokenDefinitions.dialog;
 export const inputTokens = resolvedTokenDefinitions.input;
 export const radiusTokens = resolvedTokenDefinitions.radius;
 export const shadowTokens = resolvedTokenDefinitions.shadow;
