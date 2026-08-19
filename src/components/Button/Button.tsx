@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     mode = 'primary',
     size = 'md',
     trailingIcon,
-    type = 'button',
+    type = 'submit',
     ...buttonProps
   },
   ref,
