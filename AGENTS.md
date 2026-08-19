@@ -42,6 +42,8 @@ npm run lint:fix
 npm run format         # Prettier writes all files
 npm run format:check
 npm run typecheck      # TypeScript no-emit check
+npm run test           # all Jest and Cypress component tests
+npm run test:component # Cypress component tests
 npm run build:tokens   # regenerate generated token CSS after token-source changes
 npm run check:tokens   # fail if generated token CSS is stale
 npm run build:types    # declarations from src/index.ts
@@ -50,10 +52,8 @@ npm run build:pages    # static playground
 npm run build          # clean dist, then tokens, types, library, and pages
 ```
 
-There is no test runner or automated test suite configured. Verify behavior in the playground,
-especially native, hover, active, focus-visible, disabled, loading, icon-only, and accessible-name
-cases relevant to the change. The CI quality gate runs `lint`, `typecheck`, and `build`; run those
-three before finishing.
+Tests cover behavior, interactions, and accessibility; also inspect relevant visual states in the
+playground. CI runs `lint`, `typecheck`, Jest, Cypress component tests, and `build`.
 
 ## Project constraints and conventions
 
@@ -79,4 +79,4 @@ three before finishing.
 - Do **not** hand-edit `dist/`; `npm run build` recreates it. Do not edit `node_modules/`.
 - A typical complete change updates all affected public exports, types, token sources/generated CSS,
   and playground examples as appropriate; manually checks the relevant accessibility and visual
-  states; and passes `npm run lint`, `npm run typecheck`, and `npm run build`.
+  states; and passes `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run build`.

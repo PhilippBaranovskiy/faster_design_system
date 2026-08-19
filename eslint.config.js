@@ -7,7 +7,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'node_modules'],
+    ignores: ['dist', 'node_modules', 'cypress/downloads', 'cypress/screenshots', 'cypress/videos'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -30,6 +30,29 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'react/react-in-jsx-scope': 'off',
+    },
+  },
+  {
+    files: ['src/**/*.test.{ts,tsx}'],
+    languageOptions: {
+      globals: globals.jest,
+    },
+  },
+  {
+    files: ['cypress/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        Cypress: 'readonly',
+        after: 'readonly',
+        afterEach: 'readonly',
+        before: 'readonly',
+        beforeEach: 'readonly',
+        cy: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+      },
     },
   },
   prettier,

@@ -34,6 +34,12 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
+      - name: Cypress type check
+        run: npm run typecheck:component
+
+      - name: Tests
+        run: npm run test
+
       - name: Production build
         run: npm run build
 

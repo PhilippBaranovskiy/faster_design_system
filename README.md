@@ -24,14 +24,19 @@ The development server includes a local component playground at `http://127.0.0.
 
 ## Commands
 
-| Command                 | Purpose                                                            |
-| ----------------------- | ------------------------------------------------------------------ |
-| `npm run lint`          | Runs ESLint with warnings treated as errors.                       |
-| `npm run typecheck`     | Checks TypeScript without emitting files.                          |
-| `npm run build`         | Rebuilds the publishable package and GitHub Pages site in `dist/`. |
-| `npm run build:types`   | Emits public TypeScript declarations.                              |
-| `npm run build:library` | Bundles the npm library entry and stylesheet.                      |
-| `npm run build:pages`   | Builds the static component playground for GitHub Pages.           |
+| Command                  | Purpose                                                            |
+| ------------------------ | ------------------------------------------------------------------ |
+| `npm run lint`           | Runs ESLint with warnings treated as errors.                       |
+| `npm run typecheck`      | Checks TypeScript without emitting files.                          |
+| `npm run test`           | Runs Jest and Cypress component tests.                             |
+| `npm run test:component` | Runs headless Cypress component tests.                             |
+| `npm run build`          | Rebuilds the publishable package and GitHub Pages site in `dist/`. |
+| `npm run build:types`    | Emits public TypeScript declarations.                              |
+| `npm run build:library`  | Bundles the npm library entry and stylesheet.                      |
+| `npm run build:pages`    | Builds the static component playground for GitHub Pages.           |
+
+Jest covers component behavior and accessibility; Cypress validates browser component mounting and
+interactions.
 
 ## Architecture
 
