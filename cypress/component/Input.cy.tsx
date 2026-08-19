@@ -11,12 +11,18 @@ describe('Input', () => {
     cy.get('.faster-input').should('have.class', 'faster-input--medium');
   });
 
-  it('renders its clear control and clears an uncontrolled value', () => {
-    cy.mount(<Input aria-label="Search" defaultValue="Faster" />);
+  it('accepts input, exposes its clear control, and clears an uncontrolled value', () => {
+    const onChange = cy.spy().as('onChange');
+    const onClear = cy.spy().as('onClear');
 
+    cy.mount(<Input aria-label="Search" onChange={onChange} onClear={onClear} />);
+
+    cy.get('input[aria-label="Search"]').type('Faster').should('have.value', 'Faster');
+    cy.get('@onChange').should('have.been.called');
     cy.get('button[aria-label="Clear input"]').click();
 
     cy.get('input[aria-label="Search"]').should('have.value', '').and('be.focused');
+    cy.get('@onClear').should('have.been.calledOnce');
     cy.get('button[aria-label="Clear input"]').should('not.exist');
   });
 
@@ -40,7 +46,7 @@ describe('Input', () => {
     cy.get('.faster-input').should('have.class', 'faster-input--error');
   });
 
-  it('uses dedicated number controls and affixes without decorative icon slots', () => {
+  it('uses dedicated number button interactions and affixes without decorative icon slots', () => {
     cy.mount(
       <Input
         aria-label="Quantity"
@@ -60,6 +66,8 @@ describe('Input', () => {
     cy.get('.faster-input__trailing svg').should('not.exist');
     cy.get('button[aria-label="Increase value"]').click();
     cy.get('input[aria-label="Quantity"]').should('have.value', '2');
+    cy.get('button[aria-label="Decrease value"]').click();
+    cy.get('input[aria-label="Quantity"]').should('have.value', '1');
   });
 
   it('adds automatic search, currency, and URL adornments', () => {

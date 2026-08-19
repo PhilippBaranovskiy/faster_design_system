@@ -44,13 +44,14 @@ describe('Button', () => {
     cy.contains('button', 'Large').should('have.class', 'h-[var(--faster-button-large-height)]');
   });
 
-  it('invokes an enabled button click handler', () => {
+  it('invokes its click handler for button interactions', () => {
     const onClick = cy.spy().as('onClick');
 
     cy.mount(<Button onClick={onClick}>Continue</Button>);
-    cy.contains('button', 'Continue').click();
+    cy.contains('button', 'Continue').as('button').click();
+    cy.get('@button').click();
 
-    cy.get('@onClick').should('have.been.calledOnce');
+    cy.get('@onClick').should('have.been.calledTwice');
   });
 
   it('renders disabled and loading buttons as unavailable', () => {
